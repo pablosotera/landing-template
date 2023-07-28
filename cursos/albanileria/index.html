@@ -1,0 +1,532 @@
+<?php
+if(isset($_GET['test'])){
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+}
+    
+$idcurso = 'albanileria';
+include("../../includes/funcionsDB.php");
+include("../../includes/logicparametros.php");
+$curso = getCursoDetalle($idcurso);
+
+//PRECIO_UNITARIO
+$value = $curso['PRECIO_UNITARIO'];
+$precioCursoOficial = '$' . intval(($value / (100 - $curso['PORCENTAJE_DES'])) * 100) . ' ARS';
+$precioCurso = '$' . $value . ' ARS';
+$urlCheckout = 'checkout.php';
+?>
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" >
+        <title>Cursos desde tu hogar - Curso de Albañilería</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" href="../../i/favicon.png" type="image/x-icon">
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@100;200;300;400;500;600;700;800;900&amp;family=DM+Sans:wght@100;200;300;400;500;600;700;800;900&amp;subset=latin&amp;display=swap" rel="stylesheet">
+        <!-- Bootstrap 4.5.0 CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <!-- Slick 1.8.1 jQuery plugin CSS (Sliders) -->
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+        <!-- Fancybox 3 jQuery plugin CSS (Open images and video in popup) -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+        <!-- AOS 2.3.4 jQuery plugin CSS (Animations) -->
+        <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+        <!-- FontAwesome CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+        <!-- Startup CSS (Styles for all blocks) - Remove ".min" if you would edit a css code -->
+        <link href="../../css/style.min.css" rel="stylesheet" />
+        <!-- jQuery 3.5.1 -->
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <style>
+            @media screen and (max-width: 600px) {
+                #gr {
+                    display: none; } }
+
+            @media screen and (min-width: 600px) {
+                #ch {
+                    display: none; } }
+
+            @media screen and (max-width: 900px) {
+                #xl {
+                    display: none; } }
+
+            @-webkit-keyframes blinker {
+                from {opacity: 1.0;}
+                to {opacity: 0.0;}
+            }
+            .blink{
+                text-decoration: blink;
+                -webkit-animation-name: blinker;
+                -webkit-animation-duration: 0.7s;
+                -webkit-animation-iteration-count:infinite;
+                -webkit-animation-timing-function:ease-in-out;
+                -webkit-animation-direction: alternate;
+            }
+        </style>
+    </head> 
+    <body>
+        <section class="bg-white color-white ecommerce_9  mt-0 pt-0 mx-auto pb-5" >
+            <div class="text-center" id="ch"> 
+                <a href="../../index.php" target="_blank">  <img src="../img/logo.png"  class="img-fluid  text-center mx-auto col-8 " /></a>
+            </div>
+            <div class="container" id="gr">
+                <a href="../../index.php" target="_blank">   <img src="../img/logo.png" id="gr" class="img-fluid pt-md-5" /></a>
+            </div>
+            <hr>
+            <div class="container px-xl-0 pt-5">
+                <div class="row justify-content-between align-items-stretch">
+                    <div class="col-xl-6  col-md-6   shadow "  >
+                        <img src="../../i/albanil2.jpg" class="img-fluid   rounded" />
+                    </div>
+                    <div class="mt-50 mt-lg-0 col-xl-6 col-lg-6 col-md-7 col-sm-10 text-left text-lg-left" data-aos-duration="600" data-aos="fade-down" data-aos-delay="300">
+                        <div class="">
+                            <div>
+                                <h1 class="text-dark" >Curso de Albañilería</h1>
+                                <hr id="ch" class="ml-0" style="height:2px;width:40%; background-color:#FC6407; text-shadow: 3px 2px 5px black;"> <h5 class="font-weight-light" style="color:gray;">  4.8/5</h5>
+                                <div class=" mb-4" style="color:#ffde00">
+                                    <i class="fa fa-star "></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                            </div>	
+                            <div class="lead text-dark">
+                                <i class="fas fa-check-square" style="color:#FC6407;"></i> Sin requisitos previos
+                                <br><i class="fas fa-check-square " style="color:#FC6407;"></i> Videos paso a paso.
+                                <br><i class="fas fa-check-square " style="color:#FC6407;"></i> Acceso para siempre al curso
+
+                                <br><i class="fas fa-check-square " style="color:#FC6407;"></i> Miralo desde tu celular o PC
+                            </div>
+                            <h4 class="mt-5 text-dark">El precio normal de éste curso es de <?= $precioCursoOficial ?> <span class="verde">¡Con esta promoción lo pagás <b><?= $precioCurso ?>!</b> </span></h4>
+                            <div class=" mt-4">
+                                <div class="row text-center">
+                                    <div class="mx-auto col-12 col-md-8  pl-md-0" style="background-color:"> 
+                                        <a href="checkout.php">
+                                            <button type="button shadow" class="shadow py-3 h4 col-9 bg-success text-white " style="border-radius: 30px; font-weight: lighter" >¡Lo quiero! <i class="fas fa-chevron-right f-18 ml-5"></i></button></a>
+                                    </div>
+                                    <div class="mx-auto col-8 pt-2 mt-md-0 col-md-4 " style="background-color:"> 
+                                        <img src="../../i/mercadopago.png"  class="img-fluid" />
+                                        <h5 class="text-dark mt-3 font-weight-light" id="ch"><span  style="color:#FC6407;" class="font-weight-bold">Cursos desde tu hogar</span> es una empresa Argentina. El pago es en Pesos Argentinos y no te cobraremos ningún impuesto</h5>
+
+                                    </div>
+
+                                </div>
+                                <h5 class="text-dark mt-3 font-weight-light" id="gr"><span  style="color:#FC6407;" class="font-weight-bold">Cursos desde tu hogar</span> es una empresa Argentina. El pago es en Pesos Argentinos y no te cobraremos ningún impuesto</h5>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <section class="pt-80 bg-dark color-white  feature_36 color-filter-dark-4" style="background-position:  center;  background-image: url(../../i/fondo3.jpg">
+
+            <div class="container px-xl-0">
+                <div class="row align-items-end align-items-lg-start">
+                    <div class="col-xl-1">
+                    </div>
+                    <div class="col-xl-7 col-lg-6 col-md-7 pb-80" data-aos-duration="600" data-aos="fade-down" data-aos-delay="0">
+                        <h2 class="mt-60 mb-15 f-50">Introducite en el mundo de la albañilería </h2>
+                        <hr id="ch" class="ml-0" style="height:2px;width:40%; background-color:#FC6407; text-shadow: 3px 2px 5px black;"> 
+                        <div class="mb-55 lead text-adaptive">
+
+                            <p>
+                                A través de videos paso a paso y bien explicados, aprenderás todo lo necesario para desarrollar tus habilidades en el rubro <span class="px-1 py-1" style="background-color:#bd0d51;"><b> y comenzar a hacer trabajos de albañilería básica</b></span>
+                            </p>
+                            <h3 class="mt-60 mb-15 mt-5">¿Para quien es este curso?</h3>
+                            <hr id="ch" class="ml-0" style="height:2px;width:29%; background-color:#FC6407; text-shadow: 3px 2px 5px black;"> 
+                            <p class=""> </p>
+                            <p class="f-24 font-weight-light">Para cualquiera que desee aprender albañilería, sea para dedicarse a ello o bien para aplicar en su propio domicilio.  
+                            </p>
+
+                        </div>
+
+                        <div class="mt-4 ">
+                            <a href="checkout.php">  <button type="button" class="shadow col-md-8 col-8 mx-auto py-3 lead  bg-success text-white" style="border-radius: 30px; font-weight: lighter" >Quiero este curso<i class="fas fa-chevron-right f-14 ml-5"></i></button></a>
+                        </div>
+
+                    </div>
+                    <div class="text-center mx-auto col-md-6  "  >
+                        <img src="../../i/albanil3.jpg" class="img-fluid   rounded" />
+                    
+                    </div>
+                </div>
+            </div>
+        </section>          
+        <div class="  " style="background-color:#FC6407;" >
+            <div class="container mx-auto ">
+                <!--TEMARIO -->
+                <div class="services_wrapper index2_services float_left pt-100 pb-100 " >
+                    <div class="container align-items-center justify-content-center rounded py-5" >
+                        <h2 class="text-center text-white pb-4 f-34" data-aos-duration="600" data-aos="fade-down" data-aos-delay="0" style="text-shadow: 2px 2px 4px #333333;"> <i class="fas fa-lightbulb"></i> Mirá todo lo que vas a aprender</h2>						 
+                        <div class="row " >
+                            <div class="col-lg-6 col-md-12 col-sm-12 col-12  mx-auto" >
+                                <div id="accordion" role="tablist ">
+                                    <div class="card">
+                                        <!-- Card Title -->
+                                        <div class="card_pagee py-4 shadow "  role="tab" id="headingSix"  >
+                                            <h5 class="h5-md text-center text-dark" >
+                                                <a data-toggle="collapse" href="#collapseSix" role="button" aria-expanded="true" aria-controls="collapseSix" class="py-4  text-dark">
+                                                    <i class="fas fa-chevron-right f-18 ml-5"></i> Clickeame
+                                                </a>
+                                            </h5>
+                                        </div>
+                                        <!-- Card Content -->
+                                        <div id="collapseSix" class="collapse" role="tabpanel" aria-labelledby="headingSix" data-parent="#accordion" style="">
+                                            <div class="card-body">
+                                                <div class=" show ">
+                                                    <ol class="text-dark" style="list-style: circle">
+                                                        <h5 class="h5 mt-3">Temario</h5>
+                                                        <li> Presentación - Calculo de materiales</li>
+                                                        <li> Cuadro de mezclas y morteros</li>
+                                                        <li> Trabas de ladrillos</li>
+                                                        <li> Colocacion de azulejos</li>
+                                                        <li> Tecnicas para sujetar una regla</li>                                           
+                                                        <li>  Levantar una pared</li>
+                                                        <li> Revoque grueso en pared</li>
+                                                        <li> Armado de andamios</li>
+                                                        <li> Armado de fajas </li>
+                                                        <li> Revoque grueso</li> 
+                                                        <li> Revoque fino</li>
+                                                        <li> Revestimiento</li>
+                                                        <li> Contrapiso y carpeta </li>
+                                                    </ol>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <section class="pt-155   feature_32  bg-light-gray text-dark" >
+            <div class="container px-xl-0">
+                <div class="row justify-content-center text-center">
+                    <div class="col-xl-10">
+                        <h2 class=" " data-aos-duration="600" data-aos="fade-down" data-aos-delay="0"><i class="fas fa-infinity"></i> ACCESO <span style="color:#FC6407;">ILIMITADO</span></h2>
+
+                        <div class="mt-15 mb-70 f-22 color-  text-adaptive decription" data-aos-duration="600" data-aos="fade-down" data-aos-delay="300">
+                            Lo adquirís una vez y te queda para toda la vida para que puedas ver el contenido desde tu celular o PC.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        <hr class="mt-5">
+        <section class="testimonial_" style="background-image: url(../../i/fondo7.jpg); color:white; padding-top: 150px; padding-bottom: 150px;">  
+            <div class="container px-xl-0  text-dark">
+                <div class="row justify-content-center">
+                    <div class="col-xl-10" data-aos-duration="600" data-aos="fade-down" data-aos-delay="0">
+                        <h2 class=" text-dark  text-center">Opiniones de este curso</h2>
+                        <hr id="ch" class=" mb-55" style="height:1px;width:40%; background-color:white; text-shadow: 3px 2px 5px black;"> 
+
+                    </div>
+                </div>
+                <div class="row justify-content-center justify-content-lg-start text-center text-lg-left mt-5 ">
+                    <div class="col-xl-1">
+                    </div>
+                    <div class="col-lg-1 mb-10" data-aos-duration="600" data-aos="fade-down" data-aos-delay="0">
+                        <img src="i/testimonial_3_img_1.jpg" srcset="i/testimonial_3_img_1@2x.jpg 2x" alt="" class="img-fluid radius_full" />
+                    </div>
+                    <div class="col-xl-4 col-lg-5 col-md-8 col-sm-10 mb-60 block" data-aos-duration="600" data-aos="fade-down" data-aos-delay="150">
+                        <div class="color-heading f-18 medium text-adaptive text-dark">
+                            "Muy buen material. Super bien explicado, además en mi caso me ayuda mucho poder pausar el video y continuarlo en otro momento"
+                        </div>
+                        <div class="mt-20 f-14 semibold text-uppercase sp-20">Emiliano Borges</div>
+                        <div class="" style="color:#ffde00">
+                            <i class="fa fa-star "></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-half"></i>
+                        </div>
+                    </div>
+                    <div class="col-lg-1 mb-10" data-aos-duration="600" data-aos="fade-down" data-aos-delay="300">
+                        <img src="i/testimonial_3_img_2.jpg" srcset="i/testimonial_3_img_2@2x.jpg 2x" alt="" class="img-fluid radius_full" />
+                    </div>
+                    <div class="col-xl-4 col-lg-5 col-md-8 col-sm-10 mb-60 block" data-aos-duration="600" data-aos="fade-down" data-aos-delay="450">
+                        <div class="color-heading f-18 medium text-adaptive text-dark">
+                            "Un curso con mucha información, a mi parecer ideal para comenzar con la albañilería. Como todo requiere constancia y práctica, pero está muy bien"
+                        </div>
+                        <div class="mt-20 f-14 semibold text-uppercase sp-20">Mario Malavolta</div>
+                        <div class="" style="color:#ffde00">
+                            <i class="fa fa-star "></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-half"></i>
+                        </div>
+                    </div>
+                    <div class="col-xl-1">
+                    </div>
+                    <div class="col-xl-1">
+                    </div>
+                    <div class="col-lg-1 mb-10" data-aos-duration="600" data-aos="fade-down" data-aos-delay="0">
+                        <img src="i/testimonial_3_img_3.jpg" srcset="i/testimonial_3_img_3@2x.jpg 2x" alt="" class="img-fluid radius_full" />
+                    </div>
+                    <div class="col-xl-4 col-lg-5 col-md-8 col-sm-10 mb-60 block" data-aos-duration="600" data-aos="fade-down" data-aos-delay="150">
+                        <div class="color-heading f-18 medium text-adaptive text-dark">
+                            "Debido a mi trabajo se me complica mucho los tiempos, pero lo voy haciendo a mi ritmo cada vez que tengo un espacio. Lento pero seguro!! hasta ahora aprendí bastante"
+                        </div>
+                        <div class="mt-20 f-14 semibold text-uppercase sp-20">Sebastián Fernández</div>
+                        <div class="" style="color:#ffde00">
+                            <i class="fa fa-star "></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="col-lg-1 mb-10" data-aos-duration="600" data-aos="fade-down" data-aos-delay="300">
+                        <img src="i/testimonial_3_img_4.jpg" srcset="i/testimonial_3_img_4@2x.jpg 2x" alt="" class="img-fluid radius_full" />
+                    </div>
+                    <div class="col-xl-4 col-lg-5 col-md-8 col-sm-10 mb-60 block" data-aos-duration="600" data-aos="fade-down" data-aos-delay="450">
+                        <div class="color-heading f-18 medium text-adaptive text-dark">
+                            "Explicado de forma senilla y clara, logra transmitir los conocimientos de buena manera. Se nota que el profesor está muy bien instruido"
+                        </div>
+                        <div class="mt-20 f-14 semibold text-uppercase sp-20">Fernando Cáseres</div>
+                        <div class="" style="color:#ffde00">
+                            <i class="fa fa-star "></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="col-xl-1">
+                    </div>
+                </div>
+            </div>
+            <div class="mx-auto text-center  col-md-4 mt-5">
+                <a href="checkout.php" class="shadow"> <button type="button" class="shadow col-md-8 py-3 py-md-4 h4  col-10 bg-success text-white" style="border-radius: 35px; font-weight: lighter" >Lo quiero <i class="fas fa-chevron-right f-18 ml-5"></i></button></a>
+            </div>
+        </section>		 
+        <div class="services_wrapper index2_services float_left   bg-dark text-white" style="padding-top: 150px; padding-bottom: 150px;">
+            <div class="container align-items-center justify-content-center d">
+                <div class="cp_heading_wraper center_heading ">
+                    <h3 class="text-center"><i class="fas fa-question-circle"></i> ¿Te perdiste de algo?</h3>
+                </div>
+                <div class="row mt-5 ">
+                    <div class="col-lg-6 col-md-12 col-sm-12 col-12  mx-auto text-white">
+                        <div id="accordion" role="tablist " class="">
+
+                            <div class="card p-4 mb-2" style="background-color: #FC6407; ">
+
+                                <!-- Card Title -->
+                                <div class="card_pagee " role="tab" id="headingOne">
+                                    <h5 class="h5-md">
+                                        <a data-toggle="collapse" href="#collapseOne" role="button" aria-expanded="true" aria-controls="collapseOne" class="text-white">
+                                            #1: ¿Por cuánto tiempo lo tengo?
+
+                                        </a>
+                                    </h5>
+                                </div>
+                                <!-- Card Content -->
+                                <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion" style="">
+                                    <div class="card-body">
+                                        <div class="lead">
+                                            <p>El curso te queda para siempre. Vas a poder ver el material cuando quieras, sin horarios fijos.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card py-3 p-4  mb-2" style="background-color: #FC6407; ">
+                                <div class="card_pagee" role="tab" id="headingTwo">
+                                    <h5 class="h5-md">
+                                        <a class="collapsed text-white" data-toggle="collapse" href="#collapseTwo" role="button" aria-expanded="false" aria-controls="collapseTwo" >
+                                            #2: ¿Cuánto tardo en terminarlo?
+
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion" style="">
+                                    <div class="card-body">
+
+                                        <div class="lead">
+                                            <p> Podés terminarlo en 5 días, 5 meses, 1 año... vos elegís. Los videos poseen muchísimos conceptos y tutoriales paso a paso para que hagas a tu ritmo.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card py-3 p-4  mb-2" style="background-color: #FC6407; ">
+                                <div class="card_pagee" role="tab" id="headingFour">
+                                    <h5 class="h5-md">
+                                        <a class="collapsed text-white" data-toggle="collapse" href="#collapseFour" role="button" aria-expanded="false" aria-controls="collapseFour">
+                                            #3: ¿Qué requisitos necesito?
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="collapseFour" class="collapse" role="tabpanel" aria-labelledby="headingFour" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <div class="lead">
+                                            <p>Necesitás una computadora o celular para descargar el contenido.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card py-3 p-4 mb-2" style="background-color: #FC6407; ">
+                                <div class="card_pagee" role="tab" id="headingFive">
+                                    <h5 class="h5-md">
+                                        <a class="collapsed text-white" data-toggle="collapse" href="#collapseFive" role="button" aria-expanded="false" aria-controls="collapseFive">
+                                            #4: ¿Qué pasa si no me gusta?
+
+                                        </a>
+                                    </h5>
+                                </div>
+
+                                <div id="collapseFive" class="collapse" role="tabpanel" aria-labelledby="headingFive" data-parent="#accordion">
+                                    <div class="card-body">
+
+                                        <div class="lead">
+                                            <p>Contamos con garantía de satisfacción de 15 días. Esto quiere decir que si no estás conforme con el curso durante los primeros 15 días te devolvemos el 100% del dinero sin hacer preguntas.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="mx-auto text-center  col-md-6 mt-5">
+                    <a href="checkout.php"> <button type="button" class="col-md-8 py-3 py-md-4 h4  col-10 bg-success text-white" style="border-radius: 35px; font-weight: lighter" >Lo quiero<i class="fas fa-chevron-right f-18 ml-5"></i></button></a>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <section class="bg-white ecommerce_9 pt-5" style="color:black; padding-top: 150px; padding-bottom: 150px">
+            <h2 class=" container f-50  pt-5 ">INTRODUCITE EN EL MUNDO DE LA ALBAÑILERÍA</h2>
+            <hr style="height:2px;width:50%; background-color:#FC6407; text-align:left;margin-left:0;text-shadow: 3px 2px 5px black;" class="mb-5 ">
+
+            <div class="container px-xl-0">
+                <div class="row justify-content-between align-items-stretch">
+                    <div class="col-xl-6 col-lg-5 col-md-4 d-md-flex justify-content-end align-items-stretch" data-aos-duration="600" data-aos="fade-down" data-aos-delay="600">
+                        <img src="../../i/albanil4.jpg" class="img-fluid   rounded" />
+
+                    </div>
+                    <div class="col-xl-5 col-lg-6 col-md-7 pt-100 pb-100 inner">
+                        <div class="f-14 text-uppercase semibold sp-20 subtitle " data-aos-duration="600" data-aos="fade-down" data-aos-delay="0"></div>
+                        <h5 class="text-dark">  4.8/5</h5>
+                        <div class=" mb-4" style="color:#ffde00">
+                            <i class="fa fa-star "></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div class="f-22 medium   text-adaptative  font-weight-light ">					<div data-aos-duration="600" data-aos="fade-down" data-aos-delay="300" class="text-dark ">Accedé hoy y obtené acceso ilimitado. Pago único sin suscripciones mensuales. 
+                            </div>
+                        </div><hr style="height:2px;width:50%; background-color:#FC6407; text-align:left;margin-left:0;text-shadow: 2px 2px 5px black;" class="">
+                        <div class=" f-36 medium prices col-md-8 text-center py-2 shadow text-white  " style="background-color:#FC6407; " data-aos-duration="600" data-aos="fade-down" data-aos-delay="0"  id="gr">
+                            <s class="op-7"><?= $precioCursoOficial ?></s>
+                            <span class="mr-10"><?= $precioCurso ?></span>
+                        </div>
+                        <div class="mt-90 f-36 medium prices mx-auto text-center col-8 py-2 text-white" data-aos-duration="600" data-aos="fade-down" data-aos-delay="0" style="background-color:#FC6407; "  id="ch">
+                            <s class="op-6"><?= $precioCursoOficial ?></s>
+                            <span class="mr-10"><?= $precioCurso ?></span>
+
+                        </div>
+                        <div class=" mt-4">
+                            <div class="row text-center">
+                                <div class=" col-9 col-md-10 text-center mx-auto" > 
+                                    <a href="checkout.php">
+                                        <button type="button" class="py-3 h4 col bg-success text-white ml-md-0 mx-auto text-center " style="border-radius: 30px; font-weight: lighter">¡Lo quiero! <i class="fas fa-chevron-right f-16 ml-5"></i></button></a>
+                                </div>
+
+
+                                <div class="ml-md-0 mx-auto col-8" style="background-color:"> 
+                                    <img src="../../i/mercadopago.png"  class="img-fluid pt-2 mt-md-0 " />
+                                </div>
+
+                            </div>
+                        </div> 
+
+                    </div>
+                </div>
+            </div>
+            <div class="text-center pb-0 mb-0" id="ch"> 
+                <hr>
+                <a href="../../index.php" target="_blank">  <img src="../img/logo.png"  class="img-fluid  text-center mx-auto pt-md-5 col-8" /></a>
+            </div>
+        </section>
+
+
+
+
+        <!-- Bootstrap 4.5.0 JS -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+        <!-- Fancybox 3 jQuery plugin JS (Open images and video in popup) -->
+        <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+        <!-- Slick 1.8.1 jQuery plugin JS (Sliders) -->
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+        <!-- AOS 2.3.4 jQuery plugin JS (Animations) -->
+        <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+        <!-- Maskedinput jQuery plugin JS (Masks for input fields) -->
+        <script src="../../js/jquery.maskedinput.min.js"></script>
+        <!-- Startup JS (Custom js for all blocks) -->
+        <script src="../../js/script.js"></script>
+        <!-- Startup JS (Custom js for all blocks) -->
+        <script src="../../js/jquery.parallax.min.js"></script>
+
+        <script>
+            @media screen and (max - width: 900px) {
+            .parallax1 {
+            background - image: none !important;
+            background - color: #520578 !important;
+            }
+            }
+
+            @media screen and (min - width: 900px) {
+            .parallax2 {
+            background - size: cover !important; ;
+            }
+            }
+
+        </script>
+
+
+
+        <!-- Facebook Pixel Code PA -->
+        <script>
+            !function(f, b, e, v, n, t, s)
+            {if (f.fbq)return; n = f.fbq = function(){n.callMethod?
+                    n.callMethod.apply(n, arguments):n.queue.push(arguments)};
+            if (!f._fbq)f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = []; t = b.createElement(e); t.async = !0;
+            t.src = v; s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)}(window, document, 'script',
+                    'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', '482478579871610');
+            fbq('track', 'PageView');
+            fbq('track', 'ViewContent');</script>
+        <noscript><img height="1" width="1" style="display:none"
+                       src="https://www.facebook.com/tr?id=482478579871610&ev=PageView&noscript=1"
+                       /></noscript>
+        <!-- End Facebook Pixel Code -->
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-66DGSBF34L"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments); }
+            gtag('js', new Date());
+            gtag('config', 'G-66DGSBF34L');
+        </script>
+    </body>
+</html>

@@ -1,0 +1,369 @@
+<?php
+if (isset($_GET['test'])) {
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+}
+
+$idcurso = 'albanileria';
+include("../../includes/funcionsDB.php");
+include("../../includes/logicparametros.php");
+$data = getCursoDetalleCheckout($idcurso);
+$curso = $data['producto'];
+
+//PRECIO_UNITARIO
+$value = $curso['PRECIO_UNITARIO'];
+$valueOficial = intval(($value / (100 - $curso['PORCENTAJE_DES'])) * 100) - $curso['PRECIO_UNITARIO'];
+$precioCursoOficial = '$' . intval(($value / (100 - $curso['PORCENTAJE_DES'])) * 100) . ' ARS';
+$precioDescuento = '$' . $valueOficial . ' ARS';
+$precioCursoDescuento = '$' . $value . ' ARS';
+$precioCurso = '$' . $value . ' ARS';
+$urlCheckout = 'checkout.php';
+?>
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" >
+        <title>Cursos desde tu hogar</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" href="../../i/favicon.png" type="image/x-icon">
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@100;200;300;400;500;600;700;800;900&amp;family=DM+Sans:wght@100;200;300;400;500;600;700;800;900&amp;subset=latin&amp;display=swap" rel="stylesheet">
+        <!-- Bootstrap 4.5.0 CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <!-- Slick 1.8.1 jQuery plugin CSS (Sliders) -->
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+        <!-- Fancybox 3 jQuery plugin CSS (Open images and video in popup) -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+        <!-- AOS 2.3.4 jQuery plugin CSS (Animations) -->
+        <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+        <!-- FontAwesome CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+        <!-- Startup CSS (Styles for all blocks) - Remove ".min" if you would edit a css code -->
+        <link href="../../css/style.min.css" rel="stylesheet" />
+        <!-- jQuery 3.5.1 -->
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <link href="../../vendor/css/spinner.css" rel="stylesheet">
+        <style>
+            @media screen and (max-width: 600px) {
+                #gr {
+                    display: none; } }
+
+            @media screen and (min-width: 600px) {
+                #ch {
+                    display: none; } }
+
+            @media screen and (max-width: 900px) {
+                #xl {
+                    display: none; } }
+
+            @-webkit-keyframes blinker {
+                from {opacity: 1.0;}
+                to {opacity: 0.0;}
+            }
+            .blink{
+                text-decoration: blink;
+                -webkit-animation-name: blinker;
+                -webkit-animation-duration: 0.4s;
+                -webkit-animation-iteration-count:infinite;
+                -webkit-animation-timing-function:ease-in-out;
+                -webkit-animation-direction: alternate;
+            }
+        </style>
+
+    </head> 
+    <body>
+
+        <section class=" color-white" style="padding-bottom: 15px;">
+            <div class="container" id="gr">
+                <a href="../../index.php" target="_blank"><img src="../img/logo.png" id="gr" class="img-fluid pt-md-5" /></a>
+            </div>
+            <div class="container text-center" id="ch">
+                <a href="../../index.php" target="_blank">  <img src="../img/logo.png" class="img-fluid pt-md-5 col-8" /></a>
+            </div>
+        </section>
+        <hr>
+        <section class="pt-5 text-dark  feature_36" style="background-color:;">
+
+            <div class="container px-xl-0">
+                <div class="row align-items-end align-items-lg-start">
+
+                    <div class="col-xl-7 col-lg-6 col-md-7  pl-md-5 mt-5" data-aos-duration="600" data-aos="fade-down" data-aos-delay="0">
+                        <h2 class="mt-60 mb-15 f-50 ">Ya casi</h2>
+                        <hr id="ch" class="ml-0" style="height:2px;width:40%; background-color:#c43b3b; text-shadow: 3px 2px 5px black;"> 
+                        <div class="mb-55 lead text-adaptive">
+                            <p class="" style="font-weight: lighter;"> Luego de abonar a través del formulario, vas a recibir al instante un e-mail con el acceso al curso. ¡Es muy sencillo!
+                            </p></div></div>
+                </div>
+            </div>
+        </section>        
+
+        <section class="pt-60 pb-100 ecommerce_37 text-dark" style="background-color: ;">
+            <div class="container px-xl-0">
+                <form  class="row justify-content-between"  id="procederPagoForm">
+                    <div class="col-lg-6 my-auto mx-auto">
+                        <?php
+                    foreach ($data['pack'] as $c => $item) {
+                        $precioItem = $item['PRECIO'];
+                        ?>
+
+                        <div class="p-3 mb-3" style="border-style: dashed;border-width:2px;;background-color: rgba(255, 234, 118, 0.7); ">
+                            <i class="fas fa-arrow-alt-circle-right text-danger blink"></i> 
+                            <input class="check-producto-paquete" type="checkbox" id="up_<?= $item['ID_ABRE_PACK'] ?>" value="<?= $item['ID_ABRE_PACK'] ?>">
+                            <b><?= str_replace('{#MONTO}', ('$' . $precioItem . ' ARS'), $item['TITULO_2']) ?></b>
+                            <p class="mt-2  px-3 "><?= str_replace('{#MONTO}', ('$' . $precioItem . ' ARS'), $item['DESCRIPCION']) ?></p> 
+                        </div>
+                        <?php
+                    }
+                    ?>
+                        <h6 class="f-30 mb-3 text-dark mt-md-5   "><i class="fas fa-shopping-cart"></i> Tu carrito </h6>
+
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between">
+                                <div>
+                                    <h6 class="my-0 text-dark">Curso de Albañilería </h6> <small class="text-muted">De por vida</small>
+                                </div> <span class="text-muted"><?= $precioCursoOficial ?></span>
+                        </li>
+
+                        <?php
+                        foreach ($data['pack'] as $c => $item) {
+                            $precioItem = $item['PRECIO'];
+                            ?>
+                            <li class="list-group-item d-flex justify-content-between" id="item_<?= $item['ID_ABRE_PACK'] ?>" style="">
+                                <input type="number" id="<?= $item['ID_ABRE_PACK'] ?>_item_price" value="<?= $precioItem ?>" hidden>
+                                <div style="width: 50%;">
+                                    <h6 class="my-0 text-success font-weight-bold"><b><?= $item['TITULO_1'] ?></b></h6> <small class="text-muted">De por vida</small>
+                                </div> 
+                                <span style="width: 50%;" class="text-muted text-right">$<?= $precioItem ?> ARS</span>
+                            </li>
+                            <?php
+                        }
+                        ?>
+
+                        <li class="list-group-item d-flex justify-content-between">
+                            <div>
+                                <h6 class="my-0 text-danger">Promoción  🔥</h6> <small class="text-muted"></small>
+                            </div> <span class="text-danger">- <?= $precioDescuento ?> </span>
+                        </li>
+                        <!-- Productos extras -->
+                        <li class="list-group-item d-flex justify-content-between"> <span>Total</span>
+                            <b id="total_price"><?= $precioCurso ?></b>
+                        </li>
+                        
+                            <p class="mt-1">Cursos desde tu hogar es una empresa Argentina. ¡No te vamos a cobrar ningún impuesto!</p>
+                            <div class="row mx-2 ">
+
+                                <p class="mt-2 text-dark lead">"Lo recomiendo, soy carpintero y siempre quise aprender albañilería para hacer cosas en casa. Muy bueno!!"</p>
+                                <div class="rating-user d-inline" style="color:#ffde00">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <div class="blockquote-footer text-dark">
+                                    <b>Ariel Benaq</b>, Ciudad de Bs As</div>
+                            </div>  
+                        </ul>
+                    </div>
+                    <div class="mt-30 mt-lg-5 col-xl-5 col-lg-6 pt-5 pt-md-0">
+                        <h2 class="mt-60 mb-15 f-50">¿Cómo hago para comprar?</h2>
+                        <hr id="ch" class="ml-0" style="height:2px;width:40%; background-color:#FC6407; text-shadow: 3px 2px 5px black;"> 
+
+                        <p class="mt-2 text-dark lead pb-4"><b>Completá el siguiente formulario</b> para abonar el curso. Una vez que lo abones, vas a recibir al instante un e-mail con el acceso al curso.</p>
+                        <div class="pt-40 pb-40 px-30 radius20 holder bg-gray text-dark">
+                            <div class="mb-35 d-flex flex-wrap justify-content-between align-items-center">
+                                <img src="../../i/mercadopago.png"  class="img-fluid mx-auto" />
+
+                                <h6 class="f-22 mt-5 text-center mx-auto"> <i class="fas fa-arrow-alt-circle-right text-success blink"  ></i> Completá para recibir el curso</h6>
+                            </div>
+                            <?php include_once("../../form.php"); ?>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+
+
+
+        <section class="  bg-light text-center call_to_action_10 text-white">
+            <section style="background-color: #c43b3b; ">
+                <div class="container text-white py-5 text-center" >
+                    <h3>¿Tenés alguna duda? Escribinos ahora!</h3>
+                    <a class="" href="https://api.whatsapp.com/send?phone=541154709640&amp;text=Hola!%20Te%20escribo%20por%20el%20curso" target="_blank">   <img src="../../i/wp.png" class="img-fluid pt-md-5 col-md-4 col-10" /></a>
+                </div>
+            </section>
+            <hr style="height:2px;width:70%; background-color:#c43b3b; text-align:left;margin-left:;text-shadow: 2px 2px 5px black;" class="mt-5">
+            <div class="container px-xl-0">
+
+                <div class="row justify-content-center">
+                    <div class="col-lg-3 col-md-4 block mt-40 col-4">
+                        <i class="fas fa-shield-alt f-62"></i>
+                        <div class="mt-25 mb-25 f-18 color-heading title">Protegemos tu privacidad</div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 block mt-40 col-4">
+                        <i class="fas fa-user-lock f-62"></i>
+                        <div class="mt-25 mb-25 f-18 color-heading title">Tus datos están seguros</div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 block mt-40 col-4">
+                        <i class="fas fa-certificate f-62"></i>
+                        <div class="mt-25 mb-25 f-18 color-heading title">Garantía de calidad</div>
+                    </div>
+                </div>
+            </div>
+        </section>			
+
+        <!-- Footer 11 -->
+        <footer class=" pb-45 bg-dark color-white text-center footer_11">
+            <div class="container px-xl-0">
+                <div class="row align-items-center">
+                    <div class="container" id="gr">
+                        <a href="../../index.php" target="_blank"><img src="../img/logo.png" id="gr" class="img-fluid pt-md-5" /></a>
+                    </div>
+                    <div class="container text-center" id="ch">
+                        <a href="../../index.php" target="_blank">  <img src="../img/logo.png" class="img-fluid pt-md-5 col-8" /></a>
+                    </div>
+                    <div class="mb-20 mb-lg-0 col-lg-3">
+                    </div>
+                    <div class="col-lg-9 text-lg-right">
+                    </div>
+                </div>
+                <div>
+                    <div class="mt-45 mb-45 hr h-2 bg-white op-3">
+                    </div>
+                </div>
+                <div>
+                    <div class="">
+                        <div class="text-adaptive text-center mx-auto">
+                            © 2020 Todos los derechos reservados
+                            <a href="javascript:void(0)" data-toggle="modal" data-target="#terms" class="text-white">Términos y Condiciones</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <div class="modal fade" id="terms" tabindex="-1" role="dialog" aria-labelledby="termstitle" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="termstitle">Términos y Condiciones</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 text-dark">
+                                <p>Este contrato describe los términos y condiciones generales (los "Términos y Condiciones Generales") que son aplicables al uso de los servicios ofrecidos por Cursos desde tu hogar dentro del sitio web www.cursosfacilesencasa.com , en adelante “El Sitio” o “El Sitio Web”. Cualquier persona que desee acceder y/o usar el sitio o los servicios podrá hacerlo sujetándose a los Términos y Condiciones Generales, junto con todas las demás políticas y principios que rigen a Cursos desde tu hogar. CUALQUIER PERSONA QUE NO ACEPTE ESTOS TÉRMINOS Y CONDICIONES GENERALES, LOS CUALES TIENEN UN CARÁCTER OBLIGATORIO Y VINCULANTE, DEBERÁ ABSTENERSE DE UTILIZAR EL SITIO (www.cursosfacilesencasa.com) Y/O LOS SERVICIOS QUE PROPORCIONA. ASIMISMO, LA ACEPTACIÓN DE LOS MISMOS, IMPLICA PLENA CONFORMIDAD Y CONOCIMIENTO DE ELLOS.
+
+                                    <br><br>1. CAPACIDAD Nuestros servicios sólo están disponibles para personas que tengan capacidad legal para contratar. No podrán utilizar los servicios proporcionados, los menores de edad, quienes no tengan capacidad en los términos del Código Civil y Comercial de la República Argentina, temporal o definitivamente, quienes hayan sido sancionados por El Sitio Web por haber incumplido los Términos y Condiciones Generales o por el uso indebido del material de estudio puesto a disposición. Si el usuario es menor de 18 años, su padre, madre o tutor legal debe aceptar estos Términos de Servicio y registrarse para el Servicio en nombre de aquél.  <br><br>2. REGISTRACIÓN. Es obligatorio completar el formulario de inscripción para poder utilizar los servicios que ofrece El Sitio. El futuro Usuario deberá completarlo con su información personal de manera exacta y precisa (en adelante, "Datos Personales"). Todos los campos deberán ser completados con la información requerida. El Sitio se reserva el derecho de inhabilitar a aquellos Usuarios que hayan ingresado datos falsos.  <br><br>3. MODIFICACIONES DEL ACUERDO El Sitio podrá modificar en cualquier momento los términos y condiciones de este contrato y notificará los cambios al Usuario publicando una versión actualizada de dichos términos y condiciones en este sitio web y comunicándoselo vía email a los Usuarios. Dentro de los 5 (cinco) días siguientes a la publicación de las modificaciones introducidas, el Usuario deberá comunicar por e-mail a hola@cursosfacilesencasa.com si no acepta las mismas; en ese caso quedará disuelto el vínculo contractual. Vencido este plazo, se considerará que el Usuario acepta los nuevos términos y el contrato continuará vinculando a ambas partes.  <br><br>4. COMPRAS, Y MEDIOS DE PAGO. CONDICIONES Todas las compras y transacciones que se lleven a cabo por medio de este sitio web, están sujetas a un proceso de confirmación y verificación de parte de Mercado Pago. Los precios y condiciones de venta tienen un carácter meramente informativo y pueden ser modificados en atención a las fluctuaciones del mercado sin previo aviso. No obstante, la realización de la solicitud mediante la cumplimentación del formulario de compra, implica la conformidad con el precio ofertado y con las condiciones generales de venta vigentes en ese momento. Una vez completada y enviada la solicitud, se entenderá perfeccionada la compra de pleno derecho, con todas las garantías legales que amparan al consumidor adquirente y, desde ese instante, los precios y condiciones tendrán carácter contractual y no podrán ser modificados sin el expreso acuerdo de ambos contratantes. No existen plazos de entrega ya que no se envían materiales físicos. El contenido del curso está alojado en el Grupo Privado “Cursos desde tu hogar - Curso 1” de Facebook y actualiza periódicamente para que el usuario tenga acceso a aquellos en cualquier momento y desde cualquier lugar con conexión a Internet.  <br><br>5. FORMAS DE PAGO Y MODALIDADES DE PAGO El pago se realiza a través de la plataforma “Mercado Pago” o transferencia bancaria.  <br><br>6. COMPROBACIÓN ANTIFRAUDE La compra del cliente puede ser aplazada para la comprobación antifraude. También puede ser suspendida por más tiempo para una investigación más rigurosa, para evitar transacciones fraudulentas.  <br><br>7. MONEDA EXPRESIÓN DE PRECIOS Los precios que se muestran junto a nuestros cursos se indican en Pesos Argentinos (ARS). En ellos, todos los impuestos se encuentran incluidos.  <br><br>8. USO NO AUTORIZADO En caso de haber contratado un servicio de Cursos desde tu hogar por intermedio de su sitio web www.cursosfacilesencasa.com, o cualquier otro medio, el usuario no podrá y deberá abstenerse de ofrecerlos para redistribución o reventa de ningún tipo. Queda totalmente prohibida utilización de los recursos audiovisuales que componen nuestros programas de formación de forma distinta al fin educativo con el cual fueron ideados. El uso y acceso a nuestros servicios es exclusivo al usuario comprador del curso, quedando bajo su responsabilidad la pérdida de datos personales que implique el uso compartido de su cuenta. Asimismo, el usuario también será pasible de sanciones tales como la exclusión del sistema si el mismo facilitase el acceso al sistema provisto por Cursos desde tu hogar a un tercero sin poseer autorización expresa para ello, sin perjuicio de las acciones legales que Cursos desde tu hogar pueda iniciar en contra del incumplidor.  <br><br>9. PROPIEDAD El usuario no podrá declarar propiedad intelectual o exclusiva sobre ninguno de nuestros productos o servicios, modificados o sin modificar. Todos los recursos y servicios son propiedad de Cursos desde tu hogar. En caso de que no se especifique lo contrario, nuestros productos se proporcionan sin ningún tipo de garantía, expresa o implícita. En ningún caso estas personas serán responsable de ningún daño incluyendo, pero no limitado a, daños directos, indirectos, especiales, fortuitos o consecuentes u otras pérdidas resultantes del uso o de la imposibilidad de utilizar nuestros productos.  <br><br>10. EXCLUSIÓN DE GARANTÍAS Y RESPONSABILIDAD Cursos desde tu hogar no se hará responsables, en ningún caso, de los daños y perjuicios de cualquier naturaleza que pudieran ocasionar, a título enunciativo: errores u omisiones en los contenidos, falta de disponibilidad del portal o la transmisión de virus o programas maliciosos o lesivos en los contenidos, a pesar de haber adoptado todas las medidas tecnológicas necesarias para evitarlo. <br><br> 11. MODIFICACIONES DE CONTENIDO Cursos desde tu hogar se reserva el derecho de efectuar sin previo aviso las modificaciones que considere oportunas en su portal y/o su grupo privado de Facebook “Cursos desde tu hogar - Curso 1”, pudiendo cambiar, suprimir o añadir tanto los contenidos y servicios que se presten a través de la misma como la forma en la que éstos aparezcan presentados o localizados en su portal sin requerir conformidad alguna por parte del usuario.  <br><br>12. ENLACES En el caso de que en nombre del dominio se dispusiesen enlaces o hipervínculos hacía otros sitios de Internet, Cursos desde tu hogar  no ejercerá ningún tipo de control sobre dichos sitios y contenidos. En ningún caso Cursos desde tu hogar  asumirá responsabilidad alguna por los contenidos pertenecientes a un sitio web ajeno, ni garantizará la disponibilidad técnica, calidad, fiabilidad, exactitud, amplitud, veracidad, y validez de cualquier material o información contenida en ninguno de dichos hipervínculos u otros sitios de Internet. Igualmente la inclusión de estas conexiones externas no implicará ningún tipo de asociación, fusión o participación con las entidades propietarias de los sitios web a los que redireccione un hipervínculo. Cursos desde tu hogar  se reserva el derecho a denegar o retirar el acceso a portal y/o los servicios ofrecidos sin necesidad de preaviso, a instancia propia o de un tercero, a aquellos usuarios que incumplan las Condiciones Generales de Uso. <br><br> 13. GENERALIDADES Cursos desde tu hogar  perseguirá el incumplimiento de las condiciones así como cualquier utilización indebida de su portal y/o del contenido ofrecido en el mismo ejerciendo todas las acciones civiles y penales que le puedan corresponder conforme derecho. Los resultados de los cursos mostrados a modo ilustrativo en los videos o textos del sitio web son resultados de años de entrenamiento, práctica, experimentos y aprendizaje sobre errores. En el curso se enseña e ilustra acerca de cómo lograr esos resultados, no obstante ello, no se garantizan idénticos resultados. Aprobado el curso, se entregarán constancias de cursada que en modo alguno se encuentran certificadas o avaladas por ninguna entidad gubernamental educativa.  </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Bootstrap 4.5.0 JS -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+        <!-- Fancybox 3 jQuery plugin JS (Open images and video in popup) -->
+        <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+        <!-- Slick 1.8.1 jQuery plugin JS (Sliders) -->
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+        <!-- AOS 2.3.4 jQuery plugin JS (Animations) -->
+        <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+        <!-- Maskedinput jQuery plugin JS (Masks for input fields) -->
+        <script src="../../js/jquery.maskedinput.min.js"></script>
+        <!-- Startup JS (Custom js for all blocks) -->
+        <script src="../../js/script.js"></script>
+        <script src="../../vendor/jquery/jquery.min.js"></script>
+        <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="../../vendor/jquery/wow.min.js"></script>
+        <script src="../../vendor/jquery/app.js"></script>
+        <script src="../../vendor/jquery/mailcheck.js"></script>
+        <script src="../../vendor/lib/form-validation/jquery.validate.min.js"></script>
+    <script src="../../libraries/js/checkout.js"></script>
+    <style>
+
+        @media screen and (max-width: 600px) {
+            #gr {
+                display: none; } }
+
+        @media screen and (min-width: 600px) {
+            #ch {
+                display: none; } }
+
+        @media screen and (max-width: 900px) {
+            #xl {
+                display: none; } }
+
+    </style>
+
+    <!-- upsell -->
+    <script>
+<?php
+foreach ($data['pack'] as $c => $item) {
+    echo '$("#item_' . $item['ID_ABRE_PACK'] . '").attr("style", "display: none!important");';
+}
+?>
+        $(".check-producto-paquete").on("click", function () {
+        var inputs = new Array();
+        inputs = $("#pack").val().split('|');
+        var idProducto = $(this).val();
+        var amount = parseFloat($("#amount").val());
+        //console.log("#" + idProducto + "_item_price");
+        var amountPack = parseFloat($("#" + idProducto + "_item_price").val());
+        //console.log("amountPack = " + amountPack);
+        //console.log("amount = " + amount);
+        if ($(this).is(":checked")) {
+        $("#item_" + idProducto + "").attr('style', '');
+        amount += amountPack;
+        inputs.push(idProducto);
+        //console.log("Checked amount = " + amount);
+        } else {
+        $("#item_" + idProducto + "").attr('style', 'display: none!important');
+        inputs = inputs.filter(function (elem) {
+        return elem != idProducto;
+        });
+        amount -= amountPack;
+        //console.log("Unchecked amount = " + amount);
+        }
+        $("#pack").val(inputs.sort().join("|"));
+        $("#amount").val(getFloatValue(amount));
+        $("#total_price").html('$' + getFloatValue(amount) + ' ARS');
+        });
+        $('#curso').val('<?= $idcurso ?>');
+        function getFloatValue(value) {
+        return parseFloat(Math.round(value * 100) / 100).toFixed(2);
+        }
+    </script>
+    
+    <!-- Facebook Pixel Code PA -->
+        <script>
+            !function(f, b, e, v, n, t, s)
+            {if (f.fbq)return; n = f.fbq = function(){n.callMethod?
+                    n.callMethod.apply(n, arguments):n.queue.push(arguments)};
+            if (!f._fbq)f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = []; t = b.createElement(e); t.async = !0;
+            t.src = v; s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)}(window, document, 'script',
+                    'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', '482478579871610');
+            fbq('track', 'PageView');
+            fbq('track', 'AddToCart');
+        </script>
+    <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=482478579871610&ev=PageView&noscript=1"
+                   /></noscript>
+    <!-- End Facebook Pixel Code -->
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-66DGSBF34L"></script>
+    <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments); }
+            gtag('js', new Date());
+            gtag('config', 'G-66DGSBF34L');
+    </script>
+</body>
+</html>
